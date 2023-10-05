@@ -201,7 +201,7 @@ void configureWiFi() {
   // Imposta le pagine web per la configurazione
   server.on("/", HTTP_GET, handleRoot);
   server.on("/save", HTTP_POST, handleSave);
-  server.on("/date", HTTP_POST, []() {
+  server.on("/date", HTTP_GET, []() {
   adxl345_extract();
   });
 
@@ -307,7 +307,7 @@ void setup()
   }
   server.on("/", HTTP_GET, handleRoot);
   server.on("/save", HTTP_POST, handleSave);
-  server.on("/date", HTTP_POST, []() {
+  server.on("/date", HTTP_GET, []() {
   adxl345_extract();
   });
   
