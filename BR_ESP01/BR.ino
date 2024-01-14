@@ -16,9 +16,6 @@ const uint8_t sda = 0; //D6
 //ADXL345 I2C Indirizzo 0x53(83)
 #define Addr 0x53 
 
-//Variabili float per i 3 assi
-float xAccl, yAccl, zAccl;
-
 //Variabili Wi-Fi
 const char* defaultSsid = "";  // SSID predefinito
 const char* defaultPassword = "";  // Password predefinita
@@ -211,7 +208,7 @@ void connectToWiFi() {
    if (millis() - startTime > timeout) {
       // Timeout raggiunto riporta il BR come AccessPoint
       Serial.println("Timeout di connessione scaduto. Riavvio in corso...");
-     configureWiFi();
+     configureBRWiFi();
     }
     
   }
@@ -252,7 +249,7 @@ void handleSave() {
 
 
 //configureWiFi permette di di configurare il BR come access-point per permettere all'utente di inserire le proprie credenziali
-void configureWiFi() {
+void configureBRWiFi() {
   Serial.println("Modalità configurazione Wi-Fi. Connetti il dispositivo al tuo AP.");
   Serial.println();
 
@@ -299,7 +296,7 @@ void setup()
 
   // Se non ci sono credenziali salvate, imposta il dispositivo in modalità configurazione
   if (strlen(ssid) == 0 || strlen(password) == 0) {
-    configureWiFi();
+    configureBRWiFi();
   } else {
     // Connessione Wi-Fi utilizzando le credenziali salvate
     connectToWiFi();
@@ -307,7 +304,7 @@ void setup()
   
   server.on("/", HTTP_GET, handleRoot);
   server.on("/save", HTTP_POST, handleSave);
-  server.on("/date", HTTP_GET, []() {
+  server.on("/data", HTTP_GET, []() {
     adxl345_extract();
   });
 
